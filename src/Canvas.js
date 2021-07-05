@@ -30,23 +30,23 @@ class Demo extends Component {
     brushRadius: 4,
     lazyRadius: 8
   }
-  lineLength = 0
-  id = '123'
-  clientId = uuid()
+  lineLength = 0;
+  id = '123';
+  clientId = uuid();
   canvasInfo = 'tempcanvas'
   componentDidMount() {
     const canvas = {
-      id: this.id,
       clientId: this.clientId,
-      data: {
+      data: JSON.stringify({
         ...this.state,
         lines: []
-      }
+      })
     }
     // Create the canvas. If canvas is already created, retrieve the data & draw previous canvas
     API.graphql(graphqlOperation(createCanvas, { input: canvas }))
       .then(d => console.log('canvas created :', d))
       .catch(err => {
+        console.log(err);
         if (err.errors[0].data.id === this.id) {
           const d = err.errors[0].data.data
           this.canvas.loadSaveData(d)
